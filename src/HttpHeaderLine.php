@@ -4,12 +4,10 @@ namespace Kekos\MultipartFormDataParser;
 
 class HttpHeaderLine
 {
-    /** @var string */
-    private $name;
-    /** @var string */
-    private $value;
+    private string $name;
+    private string $value;
     /** @var array<string, string> */
-    private $key_values = [];
+    private array $key_values = [];
 
     public function __construct(string $raw_header_line)
     {
@@ -19,7 +17,7 @@ class HttpHeaderLine
             throw ParserException::headerLineError($raw_header_line);
         }
 
-        list($name, $value) = $header_line;
+        [$name, $value] = $header_line;
 
         if (trim($name) !== $name) {
             throw ParserException::headerLineNameError($raw_header_line);
@@ -32,14 +30,14 @@ class HttpHeaderLine
 
         $this->value = current($value);
 
-        foreach ($value as &$raw_value_part) {
+        foreach ($value as $raw_value_part) {
             $value_part = explode('=', $raw_value_part, 2);
 
             if (count($value_part) !== 2) {
                 continue;
             }
 
-            list($key, $key_value) = $value_part;
+            [$key, $key_value] = $value_part;
 
             $key = strtolower(trim($key));
             $this->key_values[$key] = trim(trim($key_value), '"\'');
@@ -58,10 +56,6 @@ class HttpHeaderLine
 
     public function getKeyValue(string $key): ?string
     {
-        if (!isset($this->key_values[$key])) {
-            return null;
-        }
-
-        return $this->key_values[$key];
+        return $this->key_values[$key] ?? null;
     }
 }

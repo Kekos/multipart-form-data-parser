@@ -6,11 +6,11 @@ use Exception;
 
 class ParserException extends Exception
 {
-    const ERR_CONTENT_TYPE = 1;
-    const ERR_CONTENT_TYPE_BOUNDARY = 2;
-    const ERR_PARSE_HEADER_LINE_VALUE = 3;
-    const ERR_PARSE_HEADER_LINE_NAME = 4;
-    const ERR_PARSE_SPLIT_REGEX = 5;
+    public const ERR_CONTENT_TYPE = 1;
+    public const ERR_CONTENT_TYPE_BOUNDARY = 2;
+    public const ERR_PARSE_HEADER_LINE_VALUE = 3;
+    public const ERR_PARSE_HEADER_LINE_NAME = 4;
+    public const ERR_PARSE_SPLIT_REGEX = 5;
 
     public static function wrongContentType(string $given): self
     {

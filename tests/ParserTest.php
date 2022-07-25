@@ -13,8 +13,7 @@ use Psr\Http\Message\UploadedFileInterface;
 
 class ParserTest extends TestCase
 {
-    /** @var UploadedFileFactoryInterface */
-    private static $uploaded_file_factory;
+    private static UploadedFileFactoryInterface $uploaded_file_factory;
     /** @var StreamFactoryInterface */
     private static $stream_factory;
 

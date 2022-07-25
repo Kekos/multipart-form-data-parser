@@ -9,24 +9,19 @@ use Psr\Http\Message\UploadedFileInterface;
 
 class Parser
 {
-    const CONTENT_TYPE_MULTIPART = 'multipart/form-data';
+    public const CONTENT_TYPE_MULTIPART = 'multipart/form-data';
 
-    /** @var string */
-    private $raw_data;
-    /** @var string */
-    private $content_type_header;
-    /** @var UploadedFileFactoryInterface */
-    private $uploaded_file_factory;
-    /** @var StreamFactoryInterface */
-    private $stream_factory;
-    /** @var string */
-    private $boundary;
+    private string $raw_data;
+    private string $content_type_header;
+    private UploadedFileFactoryInterface $uploaded_file_factory;
+    private StreamFactoryInterface $stream_factory;
+    private string $boundary;
     /** @var array<string, mixed> */
-    private $form_fields = [];
+    private array $form_fields = [];
     /** @var array<string, mixed> */
-    private $files = [];
+    private array $files = [];
     /** @var UploadedFileInterface[] */
-    private $files_flat = [];
+    private array $files_flat = [];
 
     public function __construct(
         string $raw_data,
@@ -73,7 +68,7 @@ class Parser
         array_shift($parts);
         array_pop($parts);
 
-        foreach ($parts as $i => $part) {
+        foreach ($parts as $part) {
             $part_message = explode("\r\n\r\n", $part);
 
             if (count($part_message) < 2) {
@@ -152,9 +147,9 @@ class Parser
      */
     private function parseUploadedFile(
         array &$files_spec,
-        array &$headers,
+        array $headers,
         HttpHeaderLine $disposition,
-        string &$body,
+        string $body,
         string $filename
     ): void
     {
