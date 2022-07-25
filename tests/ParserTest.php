@@ -175,8 +175,8 @@ EOF;
      * @dataProvider providerRequest
      * @param string $boundary
      * @param string $body
-     * @param array $expected_body
-     * @param array $expected_files
+     * @param array<string, string> $expected_body
+     * @param array<string, array<string, mixed>> $expected_files
      */
     public function testDecorateRequest(string $boundary, string $body, array $expected_body, array $expected_files): void
     {
@@ -207,8 +207,8 @@ EOF;
      * @dataProvider providerRequest
      * @param string $boundary
      * @param string $body
-     * @param array $expected_body
-     * @param array $expected_files
+     * @param array<string, string> $expected_body
+     * @param array<string, array<string, mixed>> $expected_files
      */
     public function testCreateFromRequest(string $boundary, string $body, array $expected_body, array $expected_files): void
     {
@@ -229,6 +229,9 @@ EOF;
         $this->assertEquals($expected_files['foo']['name'], $files['foo']->getClientFilename());
     }
 
+    /**
+     * @return array<int, array<int, mixed>>
+     */
     public function providerRequest(): array
     {
         $boundary = 'b----1234';

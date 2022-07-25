@@ -8,7 +8,7 @@ class HttpHeaderLine
     private $name;
     /** @var string */
     private $value;
-    /** @var array */
+    /** @var array<string, string> */
     private $key_values = [];
 
     public function __construct(string $raw_header_line)

@@ -21,9 +21,9 @@ class Parser
     private $stream_factory;
     /** @var string */
     private $boundary;
-    /** @var array */
+    /** @var array<string, mixed> */
     private $form_fields = [];
-    /** @var array */
+    /** @var array<string, mixed> */
     private $files = [];
     /** @var UploadedFileInterface[] */
     private $files_flat = [];
@@ -60,7 +60,7 @@ class Parser
         $this->boundary = trim(substr($content_type_parts[1], 9), '"');
     }
 
-    private function parse()
+    private function parse(): void
     {
         $form_fields_spec = [];
         $files_spec = [];
@@ -82,7 +82,7 @@ class Parser
                 continue;
             }
 
-            list($headers, $body) = $part_message;
+            [$headers, $body] = $part_message;
             unset($part_message);
             $headers = $this->parseHeaders($headers);
             $disposition = $headers['content-disposition'] ?? null;
@@ -144,7 +144,7 @@ class Parser
     }
 
     /**
-     * @param array $files_spec
+     * @param array<string, mixed> $files_spec
      * @param array<string, HttpHeaderLine>|HttpHeaderLine[] $headers
      * @param HttpHeaderLine $disposition
      * @param string $body
@@ -185,7 +185,10 @@ class Parser
         $this->files_flat[$object_id] = $uploaded_file;
     }
 
-    private function layoutFilesAssocDeep(array &$files_spec)
+    /**
+     * @param array<string, mixed> $files_spec
+     */
+    private function layoutFilesAssocDeep(array &$files_spec): void
     {
         $files_spec = implode('&', $files_spec);
         parse_str($files_spec, $this->files);
@@ -204,7 +207,7 @@ class Parser
      * Returns the posted form fields as associative array like PHP's built in
      * $_POST super global.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getFormFields(): array
     {
@@ -215,7 +218,7 @@ class Parser
      * Returns the posted files as associative array with objects of type
      * UploadedFileFactoryInterface as leafs.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getFiles(): array
     {
