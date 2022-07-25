@@ -171,9 +171,7 @@ class Parser
         $form_name = $disposition->getKeyValue('name');
         if ($form_name === null) {
             $form_name = $file_index++;
-        }/* elseif (strpos($form_name, '[') > 0 && strrpos($form_name, ']') === strlen($form_name)) {
-            $name_array = explode('[', $form_name);
-        }*/
+        }
 
         $object_id = spl_object_id($uploaded_file);
         $files_spec[] = sprintf('%s=%d', rawurlencode($form_name), $object_id);
