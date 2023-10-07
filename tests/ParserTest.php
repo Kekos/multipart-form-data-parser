@@ -170,6 +170,50 @@ EOF;
         $this->assertEquals($expected['bar'][1]['name'], $files['bar'][1]->getClientFilename());
     }
 
+    public function testFileAndTextarea(): void
+    {
+        $boundary = 'b----1234';
+        $content_type = sprintf('multipart/form-data; boundary=%s', $boundary);
+
+        $body = <<<EOF
+--$boundary\r
+Content-Disposition: form-data; name="field_text_area"\r
+\r
+Test data\r
+\r
+in textarea\r
+ÅÄÖ\r
+--$boundary\r
+Content-Disposition: form-data; name="field_file"; filename="my_file.txt"\r
+Content-Type: text/plain\r
+\r
+Text file\r
+\r
+with CRLF\r
+\r
+--$boundary--\r
+EOF;
+
+        $parser = new Parser(
+            $body,
+            $content_type,
+            self::$uploaded_file_factory,
+            self::$stream_factory
+        );
+
+		/** @var array<string, string> $form_fields */
+		$form_fields = $parser->getFormFields();
+
+		$this->assertEquals("Test data\r\n\r\nin textarea\r\nÅÄÖ", $form_fields['field_text_area']);
+
+        /** @var UploadedFileInterface[] $files */
+        $files = $parser->getFiles();
+
+        $this->assertEquals("Text file\r\n\r\nwith CRLF\r\n", (string) $files['field_file']->getStream());
+        $this->assertEquals('text/plain', $files['field_file']->getClientMediaType());
+        $this->assertEquals('my_file.txt', $files['field_file']->getClientFilename());
+    }
+
     /**
      * @dataProvider providerRequest
      * @param string $boundary

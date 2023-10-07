@@ -69,7 +69,7 @@ class Parser
         array_pop($parts);
 
         foreach ($parts as $part) {
-            $part_message = explode("\r\n\r\n", $part);
+            $part_message = explode("\r\n\r\n", $part, 2);
 
             if (count($part_message) < 2) {
                 // Missing headers are not a fault according to RFC 2046,
