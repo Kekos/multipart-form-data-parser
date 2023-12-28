@@ -15,8 +15,7 @@ use Psr\Http\Message\UploadedFileInterface;
 class ParserTest extends TestCase
 {
     private static UploadedFileFactoryInterface $uploaded_file_factory;
-    /** @var StreamFactoryInterface */
-    private static $stream_factory;
+    private static StreamFactoryInterface $stream_factory;
 
     public static function setUpBeforeClass(): void
     {
@@ -216,8 +215,6 @@ EOF;
     }
 
     /**
-     * @param string $boundary
-     * @param string $body
      * @param array<string, string> $expected_body
      * @param array<string, array<string, mixed>> $expected_files
      */
@@ -248,8 +245,6 @@ EOF;
     }
 
     /**
-     * @param string $boundary
-     * @param string $body
      * @param array<string, string> $expected_body
      * @param array<string, array<string, mixed>> $expected_files
      */

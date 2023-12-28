@@ -10,11 +10,6 @@ use Psr\Http\Message\UploadedFileInterface;
 class Parser
 {
     public const CONTENT_TYPE_MULTIPART = 'multipart/form-data';
-
-    private string $raw_data;
-    private string $content_type_header;
-    private UploadedFileFactoryInterface $uploaded_file_factory;
-    private StreamFactoryInterface $stream_factory;
     private string $boundary;
     /** @var array<string, mixed> */
     private array $form_fields = [];
@@ -24,17 +19,12 @@ class Parser
     private array $files_flat = [];
 
     public function __construct(
-        string $raw_data,
-        string $content_type_header,
-        UploadedFileFactoryInterface $uploaded_file_factory,
-        StreamFactoryInterface $stream_factory
+        private string $raw_data,
+        private string $content_type_header,
+        private UploadedFileFactoryInterface $uploaded_file_factory,
+        private StreamFactoryInterface $stream_factory
     )
     {
-        $this->raw_data = $raw_data;
-        $this->content_type_header = $content_type_header;
-        $this->uploaded_file_factory = $uploaded_file_factory;
-        $this->stream_factory = $stream_factory;
-
         $this->readBoundary();
         $this->parse();
     }
@@ -48,7 +38,7 @@ class Parser
             throw ParserException::wrongContentType($content_type_parts[0]);
         }
 
-        if (!isset($content_type_parts[1]) || strpos($content_type_parts[1], 'boundary=') !== 0) {
+        if (!isset($content_type_parts[1]) || !str_starts_with($content_type_parts[1], 'boundary=')) {
             throw ParserException::missingBoundary();
         }
 
@@ -119,7 +109,6 @@ class Parser
     }
 
     /**
-     * @param string $header_data
      * @return array<string, HttpHeaderLine>|HttpHeaderLine[]
      * @throws ParserException
      */
@@ -141,9 +130,6 @@ class Parser
     /**
      * @param array<string, mixed> $files_spec
      * @param array<string, HttpHeaderLine>|HttpHeaderLine[] $headers
-     * @param HttpHeaderLine $disposition
-     * @param string $body
-     * @param string $filename
      */
     private function parseUploadedFile(
         array &$files_spec,
