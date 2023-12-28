@@ -6,6 +6,7 @@ use Kekos\MultipartFormDataParser\Parser;
 use Kekos\MultipartFormDataParser\ParserException;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7\ServerRequest;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\UploadedFileFactoryInterface;
@@ -215,12 +216,12 @@ EOF;
     }
 
     /**
-     * @dataProvider providerRequest
      * @param string $boundary
      * @param string $body
      * @param array<string, string> $expected_body
      * @param array<string, array<string, mixed>> $expected_files
      */
+    #[DataProvider('providerRequest')]
     public function testDecorateRequest(string $boundary, string $body, array $expected_body, array $expected_files): void
     {
         $content_type = sprintf('multipart/form-data;boundary=%s', $boundary);
@@ -247,12 +248,12 @@ EOF;
     }
 
     /**
-     * @dataProvider providerRequest
      * @param string $boundary
      * @param string $body
      * @param array<string, string> $expected_body
      * @param array<string, array<string, mixed>> $expected_files
      */
+    #[DataProvider('providerRequest')]
     public function testCreateFromRequest(string $boundary, string $body, array $expected_body, array $expected_files): void
     {
         $content_type = sprintf('multipart/form-data;boundary=%s', $boundary);
@@ -275,7 +276,7 @@ EOF;
     /**
      * @return array<int, array<int, mixed>>
      */
-    public function providerRequest(): array
+    public static function providerRequest(): array
     {
         $boundary = 'b----1234';
 
