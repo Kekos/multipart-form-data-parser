@@ -7,13 +7,16 @@ use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\UploadedFileFactoryInterface;
 use Psr\Http\Message\UploadedFileInterface;
 
+/**
+ * @phpstan-type RecursivePostArray array<array-key, mixed>
+ */
 class Parser
 {
     public const CONTENT_TYPE_MULTIPART = 'multipart/form-data';
     private string $boundary;
-    /** @var array<string, mixed> */
+    /** @var RecursivePostArray */
     private array $form_fields = [];
-    /** @var array<string, mixed> */
+    /** @var RecursivePostArray */
     private array $files = [];
     /** @var UploadedFileInterface[] */
     private array $files_flat = [];
@@ -186,7 +189,7 @@ class Parser
      * Returns the posted form fields as associative array like PHP's built in
      * $_POST super global.
      *
-     * @return array<string, mixed>
+     * @return RecursivePostArray
      */
     public function getFormFields(): array
     {
@@ -197,7 +200,7 @@ class Parser
      * Returns the posted files as associative array with objects of type
      * UploadedFileFactoryInterface as leafs.
      *
-     * @return array<string, mixed>
+     * @return RecursivePostArray
      */
     public function getFiles(): array
     {
