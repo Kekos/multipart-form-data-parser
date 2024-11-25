@@ -2,6 +2,9 @@
 
 Parses HTTP bodies encoded as `multipart/form-data`.
 
+This package can be used as a polyfill for the PHP function
+[`request_parse_body()`](https://wiki.php.net/rfc/rfc1867-non-post) available since PHP 8.4.
+
 ## Install
 
 You can install this package via [Composer](http://getcomposer.org/):
