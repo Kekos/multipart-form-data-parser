@@ -131,7 +131,7 @@ class Parser
     }
 
     /**
-     * @param array<string, mixed> $files_spec
+     * @param array<array-key, mixed> $files_spec
      * @param array<string, HttpHeaderLine>|HttpHeaderLine[] $headers
      */
     private function parseUploadedFile(
@@ -168,10 +168,11 @@ class Parser
     }
 
     /**
-     * @param array<string, mixed> $files_spec
+     * @param array<string, string> $files_spec
      */
     private function layoutFilesAssocDeep(array &$files_spec): void
     {
+        // @phpstan-ignore-next-line parameterByRef.type
         $files_spec = implode('&', $files_spec);
         parse_str($files_spec, $this->files);
 
